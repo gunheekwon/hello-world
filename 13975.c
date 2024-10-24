@@ -5,16 +5,20 @@ int abs(int x){
 }
 
 int f(int *a, int *sum, int s, int e){
+    printf("f(%d, %d)\n", s, e);
     if(s>=e) return a[s];
     if(s+1==e) return a[s]+a[e];
 
-    int ne, tmp, tot;
-    ne= s;
+    int ne, tmp, min, tot;
     tot= sum[e]-sum[s-1];
-    tmp= abs(tot-a[s]);
-    
-    while(tmp<abs(tmp-a[ne+1])){
-        ne++;
+    ne= s;
+    tmp= 0;
+    for(int j= s; j<e; j++){
+        tmp+=a[j];
+        if(min>abs(tot-2*tmp)){
+            min= abs(tot-2*tmp);
+            ne= j;
+        }
     }
 
     return f(a, sum, s, ne) + f(a, sum, ne+1, e);
@@ -34,7 +38,7 @@ int main(){
             sum[j]= a[j]+sum[j-1];
         }
         
-        printf("%d\n", f(a, sum, 1, k));
+        printf("%d\n", sum[k]+f(a, sum, 1, k));
     }
 
 }
