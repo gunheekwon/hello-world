@@ -87,14 +87,19 @@ int main(){
         }else{
             switch(a[0]){
                 case 'p': // pop
+                    printf("%d\n", pop(q));
                     break;
                 case 's': //size
+                    printf("%d\n", size(q));
                     break;
                 case 'e': //empty
+                    printf("%d\n", empty(q));
                     break;
                 case 'f': //front
+                    printf("%d\n", front(q));
                     break;
                 case 'b': //back
+                    printf("%d\n", back(q));
                     break;
                 default:
                     puts("error!");
