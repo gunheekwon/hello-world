@@ -106,4 +106,5 @@ int main(){
             }
         }
     }
+    free_queue(q);
 }
