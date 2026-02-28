@@ -1,34 +1,37 @@
 #include<stdio.h>
 
-int a[300][300];
-int b[8]= {1, 2, 4, 8, 16, 32, 62, 128};
+int paper[200][200];
+int white[200][200];
+int blue[200][200];
 
-int blue_cnt= 0;
-int white_cnt= 0;
+void f(int sx, int sy, int ex, int ey){
+    if(sx==ex&&sy==ey) return;
+    int mx= (sx+ex)/2;
+    int my= (sy+ey)/2;
+    f(sx, sy, mx, my);
+    f(mx+1, sy, ex, my);
+    f(sx, my+1, mx, ey);
+    f(mx+1, my+1, ex, ey);
 
-void cnt(int minx, int miny, int maxx, int maxy){
-    if(minx==maxx){
-        if(a[minx][miny]==1) blue_cnt++;
-        else white_cnt++;
-        return;
-    }
-    int midx= (minx+maxx)/2;
-    int midy= (miny+maxy)/2;
-    cnt(minx, miny, midx, midy);
-    cnt(midx+1, miny, maxx, midy);
-    cnt(minx, midy+1, midx, maxy);
-    cnt(midx+1, midy+1, maxx, maxy);
-    
+    // chk [mx][my], [ex][my], [mx][ey], [ex][ey]
+    white[ex][ey] = white[mx][my]+white[ex][my]+white[mx][ey]+white[ex][ey];
+    blue[ex][ey] = blue[mx][my]+blue[ex][my]+blue[mx][ey]+blue[ex][ey];
+    if(white[ex][ey]==0) blue[ex][ey]= 1; // no white paper = all blue
+    if(blue[ex][ey]==0) white[ex][ey]= 1; // no blue paper = all white
+    return;
 }
+
 
 int main(){
     int n;
     scanf("%d",&n);
     for(int i=0; i<n; i++){
         for(int j=0; j<n; j++){
-            scanf("%d", &a[i][j]);
+            scanf("%d", &paper[i][j]);
+            if(paper[i][j]) blue[i][j]= 1;
+            else white[i][j]= 1;
         }
     }
-    cnt(0, 0, n-1, n-1);
-    printf("%d\n%d\n", white_cnt, blue_cnt);
+    f(0, 0, n-1, n-1);
+    printf("%d\n%d\n", white[n-1][n-1], blue[n-1][n-1]);
 }
